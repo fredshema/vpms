@@ -1,0 +1,40 @@
+# fly.toml app configuration file generated for vpms on 2023-10-30T18:16:23+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "vpms"
+primary_region = "cdg"
+console_command = "php /var/www/html/artisan tinker"
+
+[build]
+  [build.args]
+    NODE_VERSION = "18"
+    PHP_VERSION = "8.1"
+
+[env]
+  APP_ENV = "production"
+  LOG_CHANNEL = "stderr"
+  LOG_LEVEL = "info"
+  LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
+
+[[services]]
+  internal_port = 8080
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 500
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+    force_https = false
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+    force_https = false
