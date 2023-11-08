@@ -37,6 +37,11 @@ class Part extends Model
         'updated_at' => 'nullable'
     ];
 
+    public function getImageAttribute()
+    {
+        return "https://picsum.photos/536/" . $this->id;
+    }
+
     public function orders()
     {
         return $this->belongsToMany(Order::class);
